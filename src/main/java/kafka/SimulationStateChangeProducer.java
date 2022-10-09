@@ -15,11 +15,11 @@ import proto.model.SimulationStateChangeMessage;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class Producer {
+public class SimulationStateChangeProducer {
 
     private final KafkaTemplate<String, SimulationStateChangeMessage> simulationKafkaTemplate;
 
-    public void changeState(RUNNING_STATE running_state) {
+    public void sendStateChangeMessage(RUNNING_STATE running_state) {
         SimulationStateChangeMessage simulationStateChangeMessage = SimulationStateChangeMessage.newBuilder()
                 .setStateChange(running_state)
                 .build();
@@ -30,7 +30,7 @@ public class Producer {
         future.addCallback(new ListenableFutureCallback<>() {
             @Override
             public void onSuccess(SendResult<String, SimulationStateChangeMessage> result) {
-                log.info("Message send: {}", simulationStateChangeMessage.getStateChange());
+                log.info("SimulationStateChangeMessage send: {}", simulationStateChangeMessage.getStateChange());
             }
 
             @Override
