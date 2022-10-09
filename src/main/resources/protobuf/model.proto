@@ -29,3 +29,7 @@ message CarsMessage
 message SimulationStateChangeMessage {
   RUNNING_STATE stateChange = 1;
 }
+
+message VisualizationStateChangeMessage {
+  RUNNING_STATE stateChange = 1;
+}
