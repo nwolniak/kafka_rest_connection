@@ -17,7 +17,7 @@ import proto.model.VisualizationStateChangeMessage;
 @RequiredArgsConstructor
 public class VisualizationStateChangeProducer {
 
-    private final KafkaTemplate<String, VisualizationStateChangeMessage> simulationKafkaTemplate;
+    private final KafkaTemplate<String, VisualizationStateChangeMessage> visualizationKafkaTemplate;
 
     public void sendStateChangeMessage(RUNNING_STATE running_state) {
         VisualizationStateChangeMessage visualizationStateChangeMessage = VisualizationStateChangeMessage.newBuilder()
@@ -26,7 +26,7 @@ public class VisualizationStateChangeProducer {
 
         var record = new ProducerRecord<String, VisualizationStateChangeMessage>(TopicConfiguration.VISUALIZATION_STATE_CHANGE_TOPIC,
                 visualizationStateChangeMessage);
-        ListenableFuture<SendResult<String, VisualizationStateChangeMessage>> future = simulationKafkaTemplate.send(record);
+        ListenableFuture<SendResult<String, VisualizationStateChangeMessage>> future = visualizationKafkaTemplate.send(record);
 
         future.addCallback(new ListenableFutureCallback<>() {
             @Override
