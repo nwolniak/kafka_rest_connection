@@ -9,10 +9,10 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
+import proto.model.Coordinates;
 import proto.model.Node;
 import proto.model.SimulationNewNodesTransferMessage;
 
-import javax.sound.midi.Patch;
 import java.util.List;
 
 import static kafka.TopicConfiguration.SIMULATION_NEW_NODES_TOPIC;
@@ -25,12 +25,12 @@ public class SimulationNewNodesProducer {
     private final KafkaTemplate<String, SimulationNewNodesTransferMessage> kafkaTemplate;
 
     private static final List<Node> nodeList = List.of(
-            Node.newBuilder().setNodeId("1").setLongitude(30.0).setLatitude(60.0).build(),
-            Node.newBuilder().setNodeId("2").setLongitude(31.0).setLatitude(61.0).build(),
-            Node.newBuilder().setNodeId("3").setLongitude(32.0).setLatitude(62.0).build(),
-            Node.newBuilder().setNodeId("4").setLongitude(33.0).setLatitude(63.0).build(),
-            Node.newBuilder().setNodeId("5").setLongitude(34.0).setLatitude(64.0).build(),
-            Node.newBuilder().setNodeId("6").setLongitude(35.0).setLatitude(65.0).build()
+            Node.newBuilder().setNodeId("1").setCoordinates(Coordinates.newBuilder().setLongitude(30.0).setLatitude(60.0)).build(),
+            Node.newBuilder().setNodeId("2").setCoordinates(Coordinates.newBuilder().setLongitude(31.0).setLatitude(61.0)).build(),
+            Node.newBuilder().setNodeId("3").setCoordinates(Coordinates.newBuilder().setLongitude(32.0).setLatitude(62.0)).build(),
+            Node.newBuilder().setNodeId("4").setCoordinates(Coordinates.newBuilder().setLongitude(33.0).setLatitude(63.0)).build(),
+            Node.newBuilder().setNodeId("5").setCoordinates(Coordinates.newBuilder().setLongitude(34.0).setLatitude(64.0)).build(),
+            Node.newBuilder().setNodeId("6").setCoordinates(Coordinates.newBuilder().setLongitude(35.0).setLatitude(65.0)).build()
     );
 
     public void sendSimulationNotOsmNodesTransferMessage() {

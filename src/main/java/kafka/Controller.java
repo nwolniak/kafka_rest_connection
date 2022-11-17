@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import proto.model.RUNNING_STATE;
+import proto.model.VisualizationStateChangeMessage;
+
+import static proto.model.RUNNING_STATE.*;
 
 @RestController
 @RequestMapping(value = "/kafka")
@@ -17,42 +19,57 @@ public class Controller {
 
     @PostMapping(value = "/simulation/start")
     public void sendStartSimulationStateChangeMessage() {
-        simulationStateChangeProducer.sendStateChangeMessage(RUNNING_STATE.STARTED);
+        simulationStateChangeProducer.sendStateChangeMessage(STARTED);
     }
 
     @PostMapping(value = "/simulation/resume")
     public void sendResumeSimulationStateChangeMessage() {
-        simulationStateChangeProducer.sendStateChangeMessage(RUNNING_STATE.RESUMED);
+        simulationStateChangeProducer.sendStateChangeMessage(RESUMED);
     }
 
     @PostMapping(value = "/simulation/stop")
     public void sendStopSimulationStateChangeMessage() {
-        simulationStateChangeProducer.sendStateChangeMessage(RUNNING_STATE.STOPPED);
+        simulationStateChangeProducer.sendStateChangeMessage(STOPPED);
     }
 
     @PostMapping(value = "/simulation/close")
     public void sendCloseSimulationStateChangeMessage() {
-        simulationStateChangeProducer.sendStateChangeMessage(RUNNING_STATE.CLOSED);
+        simulationStateChangeProducer.sendStateChangeMessage(CLOSED);
     }
 
     @PostMapping(value = "/visualization/start")
     public void sendStartVisualizationStateChangeMessage() {
-        visualizationStateChangeProducer.sendStateChangeMessage(RUNNING_STATE.STARTED);
+        VisualizationStateChangeMessage visualizationStateChangeMessage = VisualizationStateChangeMessage.newBuilder()
+                .setStateChange(STARTED)
+                .setRoiRegion(VisualizationStateChangeMessage.ROIRegion.newBuilder().build())
+                .setZoomLevel(VisualizationStateChangeMessage.ZOOM_LEVEL.CARS)
+                .setVisualizationSpeed(50)
+                .build();
+        visualizationStateChangeProducer.sendStateChangeMessage(visualizationStateChangeMessage);
     }
 
     @PostMapping(value = "/visualization/resume")
     public void sendResumeVisualizationStateChangeMessage() {
-        visualizationStateChangeProducer.sendStateChangeMessage(RUNNING_STATE.RESUMED);
+        VisualizationStateChangeMessage visualizationStateChangeMessage = VisualizationStateChangeMessage.newBuilder()
+                .setStateChange(RESUMED)
+                .build();
+        visualizationStateChangeProducer.sendStateChangeMessage(visualizationStateChangeMessage);
     }
 
     @PostMapping(value = "/visualization/stop")
     public void sendStopVisualizationStateChangeMessage() {
-        visualizationStateChangeProducer.sendStateChangeMessage(RUNNING_STATE.STOPPED);
+        VisualizationStateChangeMessage visualizationStateChangeMessage = VisualizationStateChangeMessage.newBuilder()
+                .setStateChange(STOPPED)
+                .build();
+        visualizationStateChangeProducer.sendStateChangeMessage(visualizationStateChangeMessage);
     }
 
     @PostMapping(value = "/visualization/close")
     public void sendCloseVisualizationStateChangeMessage() {
-        visualizationStateChangeProducer.sendStateChangeMessage(RUNNING_STATE.CLOSED);
+        VisualizationStateChangeMessage visualizationStateChangeMessage = VisualizationStateChangeMessage.newBuilder()
+                .setStateChange(CLOSED)
+                .build();
+        visualizationStateChangeProducer.sendStateChangeMessage(visualizationStateChangeMessage);
     }
 
     @PostMapping(value = "/simulation/new-nodes")

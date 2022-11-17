@@ -9,7 +9,6 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
-import proto.model.RUNNING_STATE;
 import proto.model.VisualizationStateChangeMessage;
 
 @Slf4j
@@ -19,11 +18,7 @@ public class VisualizationStateChangeProducer {
 
     private final KafkaTemplate<String, VisualizationStateChangeMessage> visualizationKafkaTemplate;
 
-    public void sendStateChangeMessage(RUNNING_STATE running_state) {
-        VisualizationStateChangeMessage visualizationStateChangeMessage = VisualizationStateChangeMessage.newBuilder()
-                .setStateChange(running_state)
-                .build();
-
+    public void sendStateChangeMessage(VisualizationStateChangeMessage visualizationStateChangeMessage) {
         var record = new ProducerRecord<String, VisualizationStateChangeMessage>(TopicConfiguration.VISUALIZATION_STATE_CHANGE_TOPIC,
                 visualizationStateChangeMessage);
         ListenableFuture<SendResult<String, VisualizationStateChangeMessage>> future = visualizationKafkaTemplate.send(record);
@@ -31,7 +26,9 @@ public class VisualizationStateChangeProducer {
         future.addCallback(new ListenableFutureCallback<>() {
             @Override
             public void onSuccess(SendResult<String, VisualizationStateChangeMessage> result) {
-                log.info("VisualizationStateChangeMessage send: {}", visualizationStateChangeMessage.getStateChange());
+                log.info("VisualizationStateChangeMessage send: stateChange={}, ROIRegion={}, ZoomLevel={}, VisualizationSpeed={}",
+                        visualizationStateChangeMessage.getStateChange(), visualizationStateChangeMessage.getRoiRegion(),
+                        visualizationStateChangeMessage.getZoomLevel(), visualizationStateChangeMessage.getVisualizationSpeed());
             }
 
             @Override
